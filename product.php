@@ -85,6 +85,7 @@
                 }
             }
         }
+
         for ($g = 0; $g <= 5; $g++) {
             if ($_GET[$data[$g][2]] != ""){
                 if ($_GET[$data[$g][2]] != $data[$g][1]){
@@ -120,7 +121,50 @@
         }
         console_log($categories);
 
-        $sql = 'SELECT '
+        if (isset($_GET["imgid"])){
+            if ($_GET["delete"] == "on"){
+                console_log("Delete image");
+                $sql = 'DELETE FROM images WHERE id="'.$_GET["imgid"].'"';
+                if ($conn->query($sql) === TRUE) {
+                    #echo "<meta http-equiv='refresh' content='0'>";
+                } 
+                else {
+                    echo "Probleem met updaten: " . $conn->error;
+                }
+            }
+            $sql = 'SELECT image_url FROM images WHERE id="'.$_GET["imgid"].'"';
+                $categories = array();
+                $result = $conn->query($sql);
+                console_log($result);
+                if ($result->num_rows > 0) {
+                    // output data of each row
+                    while($row = $result->fetch_assoc()) {
+                        $imaurl = $row["image_url"];
+                    }
+                }
+            if ($_GET["url"] != $imaurl){
+                console_log($_GET["url"] .' - '. $imaurl);
+                $sql = 'UPDATE images SET image_url ="'.$_GET["url"].'" WHERE id="'.$_GET["imgid"].'"';
+                if ($conn->query($sql) === TRUE) {
+                    #echo "<meta http-equiv='refresh' content='0'>";
+                    pass;
+                } 
+                else {
+                    echo "Probleem met updaten: " . $conn->error;
+                }
+            }
+        }
+
+        if (isset($_GET["urlnieuw"])){
+            $sql = 'INSERT INTO images (product_id, image_url) VALUES ("'.$_GET["a"].'", "'.$_GET["urlnieuw"].'")';
+            if ($conn->query($sql) === TRUE) {
+                #echo "<meta http-equiv='refresh' content='0'>";
+                pass;
+            } 
+            else {
+                echo "Probleem met updaten: " . $conn->error;
+            }
+        }
 
     ?>
 </head>
@@ -208,7 +252,7 @@
 
                 <h2>Foto's</h2>
                     <div class="table fill">
-                        <form style="display: contents;" method="get" action="product.php">
+                        
                         <div class="row">
                         <div class="cell odd">
                             Preview
@@ -222,7 +266,7 @@
                         <div class="cell even">
                             Verwijder
                         </div>
-                    </div>
+                        </div>
                     <?php
                         #$sql = "SELECT id, title, price, category_id, availability, slug FROM products WHERE id in (SELECT product_id FROM ordered_items WHERE order_id ='". $_GET["a"]. "')";
                         for ($k = 0; $k < count($images); $k++) {
@@ -236,25 +280,43 @@
                             $images[$k][0].
                             '</div>
                             <div class="cell odd click">
-                            <input name="url-'.$images[$k][0].'" type="text" value="'.
+                            <form style="display: contents;" method="get" action="product.php">
+                            <input type="hidden" name="a" value="'. $_GET["a"].'">
+                            <input type="hidden" name="imgid" value="'.$images[$k][0].'">
+                            <input name="url" type="text" value="'.
                             $images[$k][1].
                             '"></div>
-                            <div class="cell even click">
-                            <input type="checkbox" name="delete-'.$images[$k][0].'">
-                            </div>
-                            </div>';
+                                <div class="cell even click">
+                                    <input type="checkbox" name="delete">
+                                </div>
+                                <div class="cell bewaar">
+                                    <input type="submit" value="Bewaar">
+                                </div></div>
+                            </form>';
                             }
                     
                         $conn->close();
                         ?>
+                        <form style="display: contents;" method="get" action="product.php">
+                        <div class="row">
+                        <div class="cell odd">
+                            Voeg toe
+                        </div>
+                        <div class="cell even">
+                            ID
+                        </div>
+                        <div class="cell odd">
+                        <?php
+                        echo '<input type="hidden" name="a" value="'. $_GET["a"].'">'
+                        ?>
+                        <input name="urlnieuw" type="text" placeholder="URL">
+                        </div>
                         <div class="cell bewaar">
                             <input type="submit" value="Bewaar">
                         </div>
+                        </div>
                         </form>
                     </div>  
-                        <?php
-                        $conn->close();
-                        ?>
                 </div>
         </div>
     </div>
