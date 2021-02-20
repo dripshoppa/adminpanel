@@ -73,9 +73,10 @@
                           }
                     }
                 }
+                
             }
+
         }
-        
     ?>
 </head>
 
@@ -176,7 +177,7 @@
                                     $worth.
                                     '</div>
                                     <div class="cell odd ">
-                                    <form action = "bestelling.php? method="get">
+                                    <form action = "bestelling.php" method="get">
                                     <input type="hidden" name="a" value="'. $_GET["a"].'">
                                     <select name="status" id="status">'.
                                         $b.
@@ -239,7 +240,6 @@
                             ?>
                     </div>
                     
-                    </div>
                 </div>
                 <h2>Producten</h2>
                 <div class="table fill">
@@ -268,7 +268,7 @@
                         if ($result->num_rows > 0) {
                             // output data of each row
                             while($row = $result->fetch_assoc()) {
-                                echo '<a class="row" href="/informatica/leerlingenwebsites/IN2021/Projectwebsites/Drip/product/'.$row["slug"].'">
+                                echo '<a class="row" href="product.php?a='.$row["product_id"].'">
                                 <div class="cell odd click">'. 
                                 $row["id"].
                                 '</div>

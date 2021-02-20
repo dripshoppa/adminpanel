@@ -172,14 +172,6 @@ body {
     background-color: forestgreen;
 }
 
-.bewaar {
-    background-color: lightblue;
-}
-
-.bewaar:hover {
-    background-color: rgb(166, 231, 253);
-}
-
 .loginmain {
     flex-direction: column;
     display: flex;

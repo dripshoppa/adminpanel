@@ -92,7 +92,7 @@
             if ($result->num_rows > 0) {
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
-                    echo '<a class="row" href="/informatica/leerlingenwebsites/IN2021/Projectwebsites/Drip/product/'.$row["slug"].'">
+                    echo '<a class="row" href="product.php?a='.$row["id"].'">
                     <div class="cell odd click">'. 
                     $row["id"].
                     '</div>
